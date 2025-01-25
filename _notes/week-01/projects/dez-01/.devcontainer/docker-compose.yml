@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    volumes:
+      - ../..:/workspaces:cached
+    command: sleep infinity
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:12-alpine
+    restart: unless-stopped
+    volumes:
+      - psql-data:/tmp/dev/pgsql/data
+    env_file:
+      - .env
+    expose:
+      - "5432"
+    ports:
+      #- "${POSTGRES_PORT}:5432"
+      - "5432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    env_file:
+      - .env
+    volumes:
+      - pga-data:/tmp/dev/pga/data
+      #- data-share-volume:/data-share
+      - ./setup.sh:/setup.sh # Mount the setup.sh script into the container
+    ports:
+      - "5555:80"
+    depends_on:
+      - postgres
+    # command:
+    #   ["sh", "-c", "./setup.sh && exec /usr/local/bin/docker-entrypoint.sh"]
+volumes:
+  psql-data:
+  pga-data:
+  # data-share-volume:
