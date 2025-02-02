@@ -9,10 +9,4 @@ services:
       - .:/usr/app
       - ~/.dbt/:/root/.dbt/
       - ~/.google/credentials/google_credentials.json:/.google/credentials/google_credentials.json
-    networks:
-      - test_devcontainer_default
-    #network_mode: host
-networks:
-  test_devcontainer_default:
-    driver: bridge
-    
+    network_mode: host
