@@ -14,4 +14,5 @@ services:
     #network_mode: host
 networks:
   test_devcontainer_default:
+    external: true
     
