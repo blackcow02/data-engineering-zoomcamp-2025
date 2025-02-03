@@ -1,0 +1,61 @@
+
+
+
+1. 128.3
+
+2. green_tripdata_2020-04.csv
+
+3. 24,648,499
+
+SELECT COUNT(*)
+FROM `server.yellow_tripdata`
+WHERE filename IN (
+'yellow_tripdata_2020-01.csv'
+,'yellow_tripdata_2020-02.csv'
+,'yellow_tripdata_2020-03.csv'
+,'yellow_tripdata_2020-04.csv'
+,'yellow_tripdata_2020-05.csv'
+,'yellow_tripdata_2020-06.csv'
+,'yellow_tripdata_2020-07.csv'
+,'yellow_tripdata_2020-08.csv'
+,'yellow_tripdata_2020-09.csv'
+,'yellow_tripdata_2020-10.csv'
+,'yellow_tripdata_2020-11.csv'
+,'yellow_tripdata_2020-12.csv'
+);
+
+
+
+4. 1,734,051
+
+
+SELECT COUNT(*)
+FROM `server.green_tripdata`
+WHERE filename IN (
+'green_tripdata_2020-01.csv'
+,'green_tripdata_2020-02.csv'
+,'green_tripdata_2020-03.csv'
+,'green_tripdata_2020-04.csv'
+,'green_tripdata_2020-05.csv'
+,'green_tripdata_2020-06.csv'
+,'green_tripdata_2020-07.csv'
+,'green_tripdata_2020-08.csv'
+,'green_tripdata_2020-09.csv'
+,'green_tripdata_2020-10.csv'
+,'green_tripdata_2020-11.csv'
+,'green_tripdata_2020-12.csv'
+);
+
+
+5. 1,925,152
+
+SELECT COUNT(*)
+FROM `server.yellow_tripdata`
+WHERE filename IN (
+'yellow_tripdata_2021-03.csv'
+);
+
+
+6. America/New_York
+
+
