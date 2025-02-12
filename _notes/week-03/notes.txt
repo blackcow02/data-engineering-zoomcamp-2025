@@ -1,0 +1,87 @@
+1.)  What is count of records for the 2024 Yellow Taxi Data?
+
+20332093
+
+SELECT COUNT(*) FROM `serene-art-448820-d8.dwol_de_zoomcamp.dwol_yellow_tripdata_2024_external_01`
+
+
+2.) Write a query to count the distinct number of PULocationIDs for the entire dataset on both the tables.
+What is the estimated amount of data that will be read when this query is executed on the External Table and the Table?
+
+0, 155
+
+SELECT COUNT(1) FROM
+(SELECT DISTINCT PULocationId FROM `serene-art-448820-d8.dwol_de_zoomcamp.dwol_yellow_tripdata_2024_external_01`) AS X
+
+
+SELECT COUNT(1) FROM
+(SELECT DISTINCT PULocationId FROM `serene-art-448820-d8.dwol_de_zoomcamp.dwol_yellow_tripdata_2024_materialized_view`) AS X
+
+
+3.) Write a query to retrieve the PULocationID from the table (not the external table) in BigQuery. Now write a query to retrieve the PULocationID and DOLocationID on the same table. Why are the estimated number of Bytes different?
+
+
+SELECT PULocationId,DOLocationID FROM `serene-art-448820-d8.dwol_de_zoomcamp.dwol_yellow_tripdata_2024_materialized_view`
+
+
+BigQuery is a columnar database, and it only scans the specific columns requested in the query. Querying two columns (PULocationID, DOLocationID) requires reading more data than querying one column (PULocationID), leading to a higher estimated number of bytes processed.
+
+
+4.)How many records have a fare_amount of 0?
+
+8333
+
+SELECT COUNT(1) FROM `serene-art-448820-d8.dwol_de_zoomcamp.dwol_yellow_tripdata_2024_materialized_view` WHERE fare_amount=0
+
+
+
+5.)What is the best strategy to make an optimized table in Big Query if your query will always filter based on tpep_dropoff_datetime and order the results by VendorID (Create a new table with this strategy)
+
+Partition by tpep_dropoff_datetime and Cluster on VendorID
+
+
+CREATE OR REPLACE TABLE `serene-art-448820-d8.dwol_de_zoomcamp.dwol_yellow_tripdata_2024_partitioned`
+PARTITION BY DATE(tpep_dropoff_datetime)  -- Partition by the tpep_dropoff_datetime field
+CLUSTER BY VendorID
+AS
+SELECT *
+FROM `serene-art-448820-d8.dwol_de_zoomcamp.dwol_yellow_tripdata_2024_materialized_view`;
+
+
+6.) Write a query to retrieve the distinct VendorIDs between tpep_dropoff_datetime 2024-03-01 and 2024-03-15 (inclusive)
+
+Use the materialized table you created earlier in your from clause and note the estimated bytes. Now change the table in the from clause to the partitioned table you created for question 5 and note the estimated bytes processed. What are these values?
+
+310.24 MB for non-partitioned table and
+
+-- SELECT COUNT(1) FROM
+-- (SELECT DISTINCT PULocationId FROM `serene-art-448820-d8.dwol_de_zoomcamp.dwol_yellow_tripdata_2024_materialized_view` WHERE
+-- 1=1
+-- AND tpep_dropoff_datetime >= '2024-03-01 00:00:00' and tpep_dropoff_datetime <= '2024-03-15 00:00:00'
+-- ) AS X
+
+SELECT COUNT(1) FROM
+(SELECT DISTINCT PULocationId FROM `serene-art-448820-d8.dwol_de_zoomcamp.dwol_yellow_tripdata_2024_partitioned` WHERE
+1=1
+AND tpep_dropoff_datetime >= '2024-03-01 00:00:00' and tpep_dropoff_datetime <= '2024-03-15 00:00:00'
+) AS X
+26.84 MB for the partitioned table
+
+
+7.)
+
+GCP Bucket
+
+
+8.)
+no
+
+9.)
+
+SELECT COUNT(*)
+FROM `serene-art-448820-d8.dwol_de_zoomcamp.dwol_yellow_tripdata_2024_materialized_view` ;
+
+
+SELECT COUNT(1)
+FROM `serene-art-448820-d8.dwol_de_zoomcamp.dwol_yellow_tripdata_2024_materialized_view` ;
+
